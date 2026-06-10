@@ -1,0 +1,94 @@
+{
+  "builder_name": "json",
+  "citation": "",
+  "config_name": "en",
+  "dataset_name": "amazon_reviews_multi",
+  "dataset_size": 62401855,
+  "description": "",
+  "download_checksums": {
+    "hf://datasets/goosmanlei/amazon_reviews_multi@a7b1fa9703f1f930d5c8e1a65c5d2774aaab0c85/en/train.jsonl.gz": {
+      "num_bytes": 21483640,
+      "checksum": null
+    },
+    "hf://datasets/goosmanlei/amazon_reviews_multi@a7b1fa9703f1f930d5c8e1a65c5d2774aaab0c85/en/validation.jsonl.gz": {
+      "num_bytes": 541894,
+      "checksum": null
+    },
+    "hf://datasets/goosmanlei/amazon_reviews_multi@a7b1fa9703f1f930d5c8e1a65c5d2774aaab0c85/en/test.jsonl.gz": {
+      "num_bytes": 536112,
+      "checksum": null
+    }
+  },
+  "download_size": 22561646,
+  "features": {
+    "review_id": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "product_id": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "reviewer_id": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "stars": {
+      "dtype": "int64",
+      "_type": "Value"
+    },
+    "review_body": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "review_title": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "language": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "product_category": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "summary": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "bias_label": {
+      "dtype": "int64",
+      "_type": "Value"
+    }
+  },
+  "homepage": "",
+  "license": "",
+  "size_in_bytes": 84963501,
+  "splits": {
+    "train": {
+      "name": "train",
+      "num_bytes": 59425432,
+      "num_examples": 200000,
+      "dataset_name": "amazon_reviews_multi"
+    },
+    "validation": {
+      "name": "validation",
+      "num_bytes": 1495265,
+      "num_examples": 5000,
+      "dataset_name": "amazon_reviews_multi"
+    },
+    "test": {
+      "name": "test",
+      "num_bytes": 1481158,
+      "num_examples": 5000,
+      "dataset_name": "amazon_reviews_multi"
+    }
+  },
+  "version": {
+    "version_str": "0.0.0",
+    "major": 0,
+    "minor": 0,
+    "patch": 0
+  }
+}
