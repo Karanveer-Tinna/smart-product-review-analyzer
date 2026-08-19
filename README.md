@@ -2,6 +2,14 @@
 
 Fine-tuned TinyLlama model that summarizes Amazon product reviews and detects review bias. Uses supervised fine-tuning, data augmentation, ROUGE/BLEU evaluation, and an intuitive interface for review analysis.
 
+## Project Overview
+
+Smart Product Review Analyzer is an AI-powered tool that analyzes Amazon product reviews using a fine-tuned TinyLlama model. It generates concise summaries of lengthy reviews and identifies potentially biased or emotionally exaggerated content, helping consumers quickly understand product feedback and make informed purchasing decisions.
+
+## Problem Statement
+
+Online products often have hundreds or thousands of reviews, making it difficult for consumers to identify useful information efficiently. Reviews may also contain excessive emotional language, misleading claims, or potential bias. This project aims to develop an efficient NLP system that automatically summarizes product reviews and detects potential review bias while remaining lightweight enough for deployment on consumer-grade hardware.
+
 
 ## Features
 
