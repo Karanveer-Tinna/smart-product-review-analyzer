@@ -61,3 +61,51 @@ Online products often have hundreds or thousands of reviews, making it difficult
 - Precision
 - Recall
 - F1 Score
+
+## System Architecture
+
+The Smart Product Review Analyzer follows a multi-stage NLP pipeline that processes raw product reviews, generates training data, fine-tunes TinyLlama, and performs review analysis.
+
+```text
+                    Amazon Product Reviews
+                             │
+                             ▼
+                  Data Preprocessing
+                             │
+                ┌────────────┴────────────┐
+                ▼                         ▼
+           FLAN-T5 Base              BERT Sentiment
+        Summary Generation          / Bias Signals
+                │                         │
+                └────────────┬────────────┘
+                             ▼
+                    Training Dataset
+                             │
+                             ▼
+                  TinyLlama-1.1B-Chat
+                    Supervised Fine-Tuning
+                             │
+                             ▼
+                       Quantization
+                             │
+                             ▼
+                    Fine-Tuned Model
+                             │
+                             ▼
+                  ┌──────────┴──────────┐
+                  ▼                     ▼
+             Summarization        Bias Detection
+                  │                     │
+                  └──────────┬──────────┘
+                             ▼
+                     Analysis Results
+```
+
+### Pipeline Components
+
+* **Data Preprocessing:** Cleans and prepares raw product reviews for training and inference.
+* **Data Augmentation:** Uses FLAN-T5 to generate reference summaries and a BERT-based sentiment model to assist with bias-label generation.
+* **Model Fine-Tuning:** Fine-tunes TinyLlama-1.1B-Chat using Supervised Fine-Tuning (SFT) on the generated training data.
+* **Optimization:** Uses bfloat16 precision and quantization techniques to reduce memory requirements and enable efficient execution on consumer-grade hardware.
+* **Inference:** The fine-tuned model processes new reviews and produces a concise summary along with a potential bias classification.
+* **Evaluation:** Summarization is evaluated using ROUGE and BLEU, while bias detection is evaluated using Precision, Recall, and F1-score.
