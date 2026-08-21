@@ -109,3 +109,80 @@ The Smart Product Review Analyzer follows a multi-stage NLP pipeline that proces
 * **Optimization:** Uses bfloat16 precision and quantization techniques to reduce memory requirements and enable efficient execution on consumer-grade hardware.
 * **Inference:** The fine-tuned model processes new reviews and produces a concise summary along with a potential bias classification.
 * **Evaluation:** Summarization is evaluated using ROUGE and BLEU, while bias detection is evaluated using Precision, Recall, and F1-score.
+
+## Data Preprocessing
+
+The raw Amazon review dataset is first cleaned and prepared to create a balanced and manageable dataset for model training. Reviews are filtered based on length, retaining only reviews containing **50–500 characters** to remove extremely short or excessively long inputs. The dataset is then **stratified by star rating** to maintain a balanced representation of different rating classes.
+
+A fixed random seed is used to ensure reproducibility. The resulting dataset contains up to **20,000 training samples, 2,000 validation samples, and 2,000 test samples**. Each split is processed independently before being saved to disk in Hugging Face Dataset format.
+
+### Preprocessing Pipeline
+
+```text
+Amazon Reviews Dataset
+          ↓
+Review Length Filtering
+      (50–500 chars)
+          ↓
+Stratified Sampling
+      (by star rating)
+          ↓
+Train / Validation / Test
+          ↓
+Prepared Review Dataset
+```
+
+## Data Augmentation & Label Generation
+
+Since the original dataset does not provide reference summaries or explicit bias labels, additional supervision is generated automatically using pretrained NLP models and rule-based heuristics.
+
+### Summary Generation
+
+**FLAN-T5-base** is used to generate a concise, factual summary for each review. Reviews are converted into prompts instructing the model to focus on the primary praise or complaint while avoiding direct repetition. The generated summaries serve as reference targets for fine-tuning TinyLlama.
+
+### Bias Label Generation
+
+Potential review bias is identified using a combination of **BERT-based sentiment analysis and rule-based linguistic features**.
+
+The `nlptown/bert-base-multilingual-uncased-sentiment` model predicts the sentiment rating of each review. This prediction is compared with the review's original star rating. A large disagreement between the two ratings contributes to the bias score.
+
+Additional heuristic signals include:
+
+* Strong positive or negative expressions
+* Toxic or highly emotional language
+* Strong rejection phrases such as *"do not buy"* or *"waste of money"*
+* Contradictory positive and negative language
+* Mismatch between extreme language and the assigned star rating
+* Issue-related words combined with strong rejection statements
+
+The individual signals are combined into a **bias score**. Reviews with a score of **2.0 or higher are assigned a bias label of `1`**, while the remaining reviews receive a label of `0`.
+
+```text
+                 Product Review
+                       │
+          ┌────────────┴────────────┐
+          ▼                         ▼
+     FLAN-T5-base             BERT Sentiment
+          │                         │
+          ▼                         ▼
+      Summary              Predicted Rating
+                                    │
+                                    ▼
+                         Compare with Star Rating
+                                    │
+                                    ▼
+                         Linguistic Heuristics
+                                    │
+                                    ▼
+                              Bias Score
+                                    │
+                              ┌─────┴─────┐
+                              ▼           ▼
+                         Score ≥ 2    Score < 2
+                              │           │
+                              ▼           ▼
+                         Bias = 1     Bias = 0
+```
+
+The final augmented dataset therefore contains the original review and star rating along with a generated **summary** and **bias label**, providing the supervised training targets required for the TinyLlama fine-tuning stage.
+
