@@ -186,3 +186,67 @@ The individual signals are combined into a **bias score**. Reviews with a score 
 
 The final augmented dataset therefore contains the original review and star rating along with a generated **summary** and **bias label**, providing the supervised training targets required for the TinyLlama fine-tuning stage.
 
+## Fine-Tuning Methodology
+
+The project fine-tunes **TinyLlama-1.1B-Chat-v1.0** using **Supervised Fine-Tuning (SFT)** to adapt the pretrained language model to product-review summarization and bias detection. The augmented dataset contains reviews paired with generated summaries and bias labels, allowing the model to learn both tasks within a unified instruction-following framework.
+
+The training process uses **Hugging Face Transformers** and PyTorch. To make fine-tuning feasible on limited GPU hardware, memory-efficient techniques such as **bfloat16 precision and quantization** are incorporated.
+
+### Training Configuration
+
+| Parameter          | Configuration                            |
+| ------------------ | ---------------------------------------- |
+| Base Model         | TinyLlama-1.1B-Chat-v1.0                 |
+| Fine-Tuning Method | Supervised Fine-Tuning (SFT)             |
+| Framework          | PyTorch + Hugging Face Transformers      |
+| Training Data      | Augmented Amazon Reviews                 |
+| Tasks              | Summarization + Bias Detection           |
+| Precision          | bfloat16                                 |
+| Optimization       | Quantization / Memory-efficient Training |
+
+## Training Pipeline
+
+The training pipeline converts the augmented review dataset into instruction-style examples before fine-tuning TinyLlama.
+
+```text
+                 Augmented Dataset
+                        │
+                        ▼
+              Review + Summary +
+                 Bias Label
+                        │
+                        ▼
+             Instruction Formatting
+                        │
+                        ▼
+                 Tokenization
+                        │
+                        ▼
+              TinyLlama-1.1B-Chat
+                        │
+                        ▼
+            Supervised Fine-Tuning
+                        │
+          ┌─────────────┴─────────────┐
+          ▼                           ▼
+   Review Summarization          Bias Detection
+          │                           │
+          └─────────────┬─────────────┘
+                        ▼
+                Fine-Tuned Model
+                        │
+                        ▼
+              Quantized Inference
+                        │
+                        ▼
+                Evaluation
+```
+
+### Training Stages
+
+1. **Dataset Preparation:** The augmented reviews, generated summaries, and bias labels are loaded and formatted into instruction-response examples.
+2. **Tokenization:** Review prompts and expected responses are tokenized using the TinyLlama tokenizer with appropriate truncation and padding.
+3. **Supervised Fine-Tuning:** TinyLlama is trained on the prepared examples to learn the relationship between product reviews and their corresponding summaries and bias classifications.
+4. **Memory Optimization:** bfloat16 precision and quantization techniques reduce GPU memory consumption and enable training on a limited GPU.
+5. **Model Validation:** The validation split is used to monitor model performance during training and identify potential overfitting.
+6. **Evaluation:** The resulting model is evaluated on the held-out test set using ROUGE and BLEU for summarization and Precision, Recall, and F1-score for bias detection.
