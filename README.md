@@ -250,3 +250,38 @@ The training pipeline converts the augmented review dataset into instruction-sty
 4. **Memory Optimization:** bfloat16 precision and quantization techniques reduce GPU memory consumption and enable training on a limited GPU.
 5. **Model Validation:** The validation split is used to monitor model performance during training and identify potential overfitting.
 6. **Evaluation:** The resulting model is evaluated on the held-out test set using ROUGE and BLEU for summarization and Precision, Recall, and F1-score for bias detection.
+
+
+## Evaluation Results — Summarization
+
+The summarization performance of the **fine-tuned TinyLlama model** was evaluated against the **base TinyLlama model** using ROUGE and BLEU scores on the test set. The results demonstrate a substantial improvement in the quality and relevance of generated product-review summaries after fine-tuning.
+
+### ROUGE Results
+
+| Model                    |    ROUGE-1 |    ROUGE-2 |    ROUGE-L | ROUGE-Lsum |
+| ------------------------ | ---------: | ---------: | ---------: | ---------: |
+| Base TinyLlama           |     0.1904 |     0.0645 |     0.1553 |     0.1554 |
+| **Fine-Tuned TinyLlama** | **0.5092** | **0.4448** | **0.5039** | **0.5012** |
+
+The fine-tuned model significantly outperforms the baseline across all ROUGE metrics. In particular, **ROUGE-2 increased from 0.0645 to 0.4448**, indicating a substantial improvement in matching meaningful two-word sequences from the reference summaries.
+
+### BLEU Results
+
+| Model                    |       BLEU |     1-gram |     2-gram |     3-gram |     4-gram |
+| ------------------------ | ---------: | ---------: | ---------: | ---------: | ---------: |
+| Base TinyLlama           |     0.0514 |     0.1867 |     0.0580 |     0.0316 |     0.0204 |
+| **Fine-Tuned TinyLlama** | **0.5492** | **0.5905** | **0.5444** | **0.5344** | **0.5295** |
+
+The BLEU score increased from **0.0514 to 0.5492**, showing that fine-tuning substantially improved the model's ability to generate summaries that align with the reference summaries.
+
+### Overall Improvement
+
+| Metric     | Baseline | Fine-Tuned | Improvement |
+| ---------- | -------: | ---------: | ----------: |
+| ROUGE-1    |   0.1904 | **0.5092** |    +167.44% |
+| ROUGE-2    |   0.0645 | **0.4448** |    +589.61% |
+| ROUGE-L    |   0.1553 | **0.5039** |    +224.40% |
+| ROUGE-Lsum |   0.1554 | **0.5012** |    +222.52% |
+| BLEU       |   0.0514 | **0.5492** |    +968.48% |
+
+Overall, the evaluation indicates that **domain-specific supervised fine-tuning substantially improves TinyLlama's product-review summarization capability** compared with the base model. The fine-tuned model produces outputs that have considerably greater lexical and n-gram overlap with the generated reference summaries.
