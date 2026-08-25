@@ -285,3 +285,22 @@ The BLEU score increased from **0.0514 to 0.5492**, showing that fine-tuning sub
 | BLEU       |   0.0514 | **0.5492** |    +968.48% |
 
 Overall, the evaluation indicates that **domain-specific supervised fine-tuning substantially improves TinyLlama's product-review summarization capability** compared with the base model. The fine-tuned model produces outputs that have considerably greater lexical and n-gram overlap with the generated reference summaries.
+
+## Limitations
+
+* **Synthetic Labels:** The training summaries and bias labels are automatically generated using pretrained models and heuristic rules rather than human annotations. This may introduce noise or labeling errors.
+* **Subjectivity of Bias Detection:** Review bias is difficult to define objectively. Strong language or sentiment does not always indicate that a review is biased.
+* **Model Capacity:** TinyLlama-1.1B has significantly fewer parameters than larger language models, which can limit its ability to understand complex reviews and generate highly detailed summaries.
+* **Evaluation Limitations:** ROUGE and BLEU primarily measure lexical overlap with reference summaries and may not fully capture factual accuracy, coherence, or overall summary quality.
+* **Dataset Constraints:** The model is trained on a sampled subset of Amazon reviews and may not generalize equally well across different products, domains, or writing styles.
+
+## Future Improvements
+
+* **Human-Annotated Dataset:** Create a manually labeled dataset for review bias and use human-written summaries to improve the reliability of training and evaluation.
+* **Advanced Fine-Tuning:** Explore LoRA/QLoRA and parameter-efficient fine-tuning techniques to improve model performance while reducing computational requirements.
+* **Aspect-Based Analysis:** Extend the system to identify specific product aspects such as price, quality, durability, performance, and usability.
+* **Improved Bias Detection:** Incorporate additional linguistic, semantic, and contextual features to distinguish genuine strong opinions from potentially misleading reviews.
+* **Factuality Evaluation:** Add metrics and evaluation methods that measure whether generated summaries accurately represent the original review.
+* **Multilingual Support:** Extend the system to support reviews written in multiple languages.
+* **Larger-Scale Evaluation:** Evaluate the model across different product categories and larger datasets to measure its robustness and generalization.
+* **Real-Time Deployment:** Develop a browser extension or web application that can analyze reviews directly while users browse e-commerce websites.
