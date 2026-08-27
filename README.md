@@ -304,3 +304,33 @@ Overall, the evaluation indicates that **domain-specific supervised fine-tuning 
 * **Multilingual Support:** Extend the system to support reviews written in multiple languages.
 * **Larger-Scale Evaluation:** Evaluate the model across different product categories and larger datasets to measure its robustness and generalization.
 * **Real-Time Deployment:** Develop a browser extension or web application that can analyze reviews directly while users browse e-commerce websites.
+
+
+## Installation
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/Karanveer-Tinna/smart-product-review-analyzer
+cd Smart-Product-Review-Analyzer
+```
+
+### 2. Create a Virtual Environment
+
+```bash
+python -m venv venv
+```
+
+Activate the environment:
+
+**Linux/macOS:**
+
+```bash
+source venv/bin/activate
+```
+
+**Windows:**
+
+```bash
+venv\Scripts\activate
+```
